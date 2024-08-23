@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>绑定 Minecraft 账户</title>
+
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+
+    <link href="/style.css" rel="stylesheet">
+</head>
+
+<body>
+<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <div class="mdc-card mdc-card--outlined" style="padding: 48px 40px 36px; width: 360px;">
+        <div class="form-card__title">验证您的账户</div>
+
+        <div class="form-card__subhead">请在服务器中输入 /token 以获取您的验证码</div>
+
+        <form action="authenticate" method="post">
+            <div class="text-field">
+                <label th:class="'mdc-text-field mdc-text-field--outlined code-text-field' + (${message} != null ? ' mdc-text-field--invalid' : '')" style="width: 100%;">
+                        <span class="mdc-notched-outline">
+                            <span class="mdc-notched-outline__leading"></span>
+                            <span class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="label-link">验证码</span>
+                            </span>
+                            <span class="mdc-notched-outline__trailing"></span>
+                        </span>
+                    <input type="text" name="code" class="mdc-text-field__input" aria-labelledby="label-code" placeholder="000000" required pattern="^\d{6}$">
+                </label>
+
+                <div class="mdc-text-field-helper-line" th:if="${message} != null">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true" th:text="${message}"></div>
+                </div>
+            </div>
+
+            <input type="text" name="minecraft_id" th:value="${minecraft_id}" hidden>
+            <input type="text" name="redirect" th:value="${redirect}" hidden>
+            <input type="text" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" hidden>
+
+            <div class="form-card__button">
+                <button class="mdc-button mdc-button--raised submit-button">
+                    <span class="mdc-button__ripple"></span>
+                    <span class="mdc-button__label"><span style="padding: 0 10px;">验证</span></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-card'));
+    mdc.textField.MDCTextField.attachTo(document.querySelector('.code-text-field'));
+    mdc.ripple.MDCRipple.attachTo(document.querySelector('.submit-button'));
+</script>
+</body>
+
+</html>
