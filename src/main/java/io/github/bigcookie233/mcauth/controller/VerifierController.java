@@ -12,17 +12,21 @@ import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Base64;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
-public class AuthorizerController {
+public class VerifierController {
     private CodeVerifier verifier;
     private String secret;
+    private Pattern pattern;
 
     @Autowired
-    public AuthorizerController(CodeVerifier verifier) {
+    public VerifierController(CodeVerifier verifier) {
         this.verifier = verifier;
         this.secret = System.getenv("secret");
         this.secret = this.secret != null ? this.secret : "";
+        this.pattern = Pattern.compile("^(http[s]?:)?//([^:/\\s]+)");
     }
 
     @GetMapping("code")
@@ -39,7 +43,7 @@ public class AuthorizerController {
         return "code";
     }
 
-    @PostMapping("authenticate")
+    @PostMapping("verify")
     public RedirectView authenticate(@RequestParam String minecraft_id,
                                      @RequestParam String code,
                                      @RequestParam String redirect) {
@@ -55,6 +59,10 @@ public class AuthorizerController {
         String playerSecret = Utils.calculateSHA256(this.secret + minecraft_id);
         if (!verifier.isValidCode(playerSecret, code)) {
             return new RedirectView(uriComponentsBuilder.queryParam("message", Base64.getUrlEncoder().encodeToString("验证码错误".getBytes())).encode().toUriString());
+        }
+        Matcher matcher = pattern.matcher(redirect);
+        if (matcher.find()) {
+            System.out.println("Host: " + matcher.group(2));
         }
         return new RedirectView(redirect);
     }

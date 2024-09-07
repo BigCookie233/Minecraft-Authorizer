@@ -6,11 +6,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AuthenticatorApplication {
+public class VerifierApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(new Class[]{
-                AuthenticatorApplication.class,
+                VerifierApplication.class,
                 SecurityConfig.class,
                 VerifierConfig.class
         }, args);

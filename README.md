@@ -1,1 +1,1 @@
-# Minecraft-Authorizer
+# OTP-Verifier

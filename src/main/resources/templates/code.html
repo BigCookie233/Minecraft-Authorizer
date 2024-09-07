@@ -18,7 +18,7 @@
 
         <div class="form-card__subhead">请在服务器中输入 /token 以获取您的验证码</div>
 
-        <form action="authenticate" method="post">
+        <form action="verify" method="post">
             <div class="text-field">
                 <label th:class="'mdc-text-field mdc-text-field--outlined code-text-field' + (${message} != null ? ' mdc-text-field--invalid' : '')" style="width: 100%;">
                         <span class="mdc-notched-outline">
